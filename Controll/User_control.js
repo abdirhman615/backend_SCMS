@@ -1,25 +1,14 @@
 /* eslint-disable no-unused-vars */
+
 const express = require('express')
 const usersRouter = express.Router()
 const { UserModal, UserRegValidate } = require('../Models/Users_modal')
 const bcrypt = require('bcrypt')
 
+
 usersRouter.get('/', async (req, res) => {
-
-  const Alluser = await UserModal.find().populate([{
-    path:"Faculty_id",
-    model:"Faculty",
-    select:"Facultyname"
-
-}])
-res.json({Alluser})
-  // try {
-  //   const Allusers = await UserModal.find()
-
-  //   res.json({ Allusers })
-  // } catch (error) {
-  //   res.json(error.message)
-  // }
+  const Alluser = await UserModal.find()
+  res.json({ Alluser })
 })
 usersRouter.get('/:id', async (req, res) => {
   const Userbyid = await UserModal.findById()
@@ -96,7 +85,7 @@ usersRouter.put('/:id', async (req, res) => {
       userStatus: req.body.userStatus,
       usertype: req.body.usertype,
       dar: req.body.dar,
-      Faculty_id: req.body.Faculty_id,
+      
 
     }, { new: true })
 

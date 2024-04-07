@@ -1,6 +1,6 @@
 
 const { UserModal,LoginValidate } = require("../Models/Users_modal");
-const {StudentModal,STDLoginValidate } = require("../Models/Student_modal");
+const {CustmerModal,CusLoginValidate } = require("../Models/Custmer_modal");
 const bcrypt=require('bcrypt')
 let jwt = require('jsonwebtoken');
 require('dotenv').config();
@@ -54,7 +54,7 @@ const loginRouter = async (req, res) => {
 
  
 
-}
+
 //   const { error } = LoginValidate(req.body)
 //   if (error) return res.send(error.message)
 //   try {
@@ -76,52 +76,54 @@ const loginRouter = async (req, res) => {
 // }
   
   
-  // try {
-  //   // validation
-  //   const { error } = STDLoginValidate(req.body);
-  //   if (error) return res.status(449).send(error.message);
+ 
+}
 
-  //   // find user data
-  //   const SDTgetdata = await StudentModal.findOne({
-  //       Email: req.body.Email,
-  //   });
-  //   if (!SDTgetdata)
-  //     return res.status(401).send({
-  //       status: false,
-  //       message: 'Email or password is incorrect',
-  //     });
+const loginRouterSTD = async (req, res) => {
+ try {
+    // validation
+    const { error } = CusLoginValidate(req.body);
+    if (error) return res.status(449).send(error.message);
 
-  //   // check password
-  //   const stdcheckpass = await bcrypt.compare(
-  //     req.body.STD_Pass,
-  //     SDTgetdata.STD_Pass
-  //   );
-  //   if (!stdcheckpass)
-  //     return res.status(401).send({
-  //       status:false,
-  //       message: 'Email or password is incorrect',
-  //     }); 
-  //   // token using jwt
-  //   const token = jwt.sign(
-  //     {
-  //       id: SDTgetdata._id,
-  //       Email: SDTgetdata.Email,
+    // find user data
+    const SDTgetdata = await CustmerModal.findOne({
+        Email: req.body.Email,
+    });
+    if (!SDTgetdata)
+      return res.status(401).send({
+        status: false,
+        message: 'Email or password is incorrect',
+      });
+
+    // check password
+    const stdcheckpass = await bcrypt.compare(
+      req.body.STD_Pass,
+      SDTgetdata.STD_Pass
+    );
+    if (!stdcheckpass)
+      return res.status(401).send({
+        status:false,
+        message: 'Email or password is incorrect',
+      }); 
+    // token using jwt
+    const token = jwt.sign(
+      {
+        id: SDTgetdata._id,
+        Email: SDTgetdata.Email,
        
-  //     },
-  //    "acbfa14fb74b48e273b6a4e911ed9fd7a9f5a3355ceda4ac0b68fa42b2527097niofh89nnspjfhusf"
-  //   );
-  //   res.status(200).header('token', token).json({
-  //     status: true,
-  //     message: 'successfully logged in',
-  //     token: token,
-  //   });
-  // } catch (error) {
-  //   res.status(400).send(error.message);
-  // }
-
-
-
+      },
+     "acbfa14fb74b48e273b6a4e911ed9fd7a9f5a3355ceda4ac0b68fa42b2527097niofh89nnspjfhusf"
+    );
+    res.status(200).header('token', token).json({
+      status: true,
+      message: 'successfully logged in',
+      token: token,
+    });
+  } catch (error) {
+    res.status(400).send(error.message);
+  }
+}
    
 
 
-module.exports = {loginRouter};
+module.exports = {loginRouter,loginRouterSTD};

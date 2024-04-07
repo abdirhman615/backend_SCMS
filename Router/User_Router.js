@@ -5,13 +5,8 @@ const { UserModal, UserRegValidate } = require('../Models/Users_modal')
 const bcrypt = require('bcrypt')
 
 userRouter.get('/', async (req, res) => {
-  const Alluser = await UserModal.find().populate([{
-    path:"Faculty_id",
-    model:"Faculty",
-    select:"Facultyname"
-
-}])
-res.json({Alluser})
+  const Alluser = await UserModal.find()
+  res.json({ Alluser })
 })
   
 
